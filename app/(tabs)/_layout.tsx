@@ -1,4 +1,4 @@
-import {Redirect, Stack, Tabs} from "expo-router";
+import {Redirect, Tabs} from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import {theme} from "@/theme";
