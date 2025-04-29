@@ -2,6 +2,9 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import { theme } from "@/theme";
 import {useUserStore} from "@/store/userStore";
 import {useRouter} from "expo-router";
+import {PlantlyButton} from "@/components/PlantlyButton";
+import {LinearGradient} from "expo-linear-gradient";
+import PlantlyImage from "@/components/PlantlyImage";
 
 export default function OnboardingScreen() {
     const router = useRouter()
@@ -14,21 +17,39 @@ export default function OnboardingScreen() {
         console.log(hasUserOnboarded)
     }
     return (
-        <View style={styles.container}>
-            <Text style={styles.text}>Onboarding</Text>
-            <Button title={"Let me in!"} onPress={handlePress} />
-        </View>
+        <LinearGradient
+            start={[0, 0]}
+            end={[1, 1]}
+            colors={[theme.colorLimeGreen, theme.colorAppleGreen, theme.colorGreen]}
+            style={styles.container}>
+            <View>
+            <Text style={styles.headline}>Plantly</Text>
+            <Text style={styles.tagline}>Keep your plants healthy and hydrated</Text>
+            </View>
+            <PlantlyImage />
+            <PlantlyButton title={"Let me in!"} onPress={handlePress} />
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",
         backgroundColor: theme.colorWhite,
     },
-    text: {
-        fontSize: 24,
+    headline: {
+        fontSize: 42,
+        color: theme.colorWhite,
+        fontWeight: "bold",
+        marginBottom: 12,
+        textAlign: "center",
     },
+    tagline: {
+        fontSize: 24,
+        color: theme.colorWhite,
+        alignItems: "center",
+    }
+
 });

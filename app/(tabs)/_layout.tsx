@@ -1,8 +1,9 @@
-import {Redirect, Tabs} from "expo-router";
+import {Link, Redirect, Tabs} from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import {theme} from "@/theme";
 import {useUserStore} from "@/store/userStore";
+import { Pressable } from "react-native";
 export default function Layout() {
     const hasUserOnboarded = useUserStore((state) => state.hasUserOnboarded);
 
@@ -17,7 +18,15 @@ export default function Layout() {
             <Tabs.Screen name="index" options={{
                 title: "Home",
                 tabBarShowLabel: false,
-                tabBarIcon: ({size, color}) => <Entypo name="leaf" size={size} color={color} /> }}
+                tabBarIcon: ({size, color}) => (<Entypo name="leaf" size={size} color={color}/>),
+                headerRight: () => (
+                    <Link href="/new" asChild>
+                        <Pressable style={{marginRight: 12}} hitSlop={20}>
+                            <Feather name="plus" size={24} color={theme.colorGreen}/>
+                        </Pressable>
+                    </Link>
+                ),
+            }}
             />
             <Tabs.Screen name="profile" options={{
                 title: "Profile",
