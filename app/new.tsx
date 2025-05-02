@@ -10,11 +10,15 @@ import { theme } from "@/theme";
 import { PlantlyButton } from "@/components/PlantlyButton";
 import { useState } from "react";
 import  PlantlyImage  from "@/components/PlantlyImage";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+import {usePlantStore} from "@/store/plantsStore";
+import {useRouter} from "expo-router";
 
 export default function NewScreen() {
     const [name, setName] = useState<string>();
     const [days, setDays] = useState<string>();
-
+    const addPLant = usePlantStore(state => state.addPlant);
+    const router = useRouter();
     const handleSubmit = () => {
         if (!name) {
             return Alert.alert("Validation Error", "Give your plant a name");
@@ -33,12 +37,13 @@ export default function NewScreen() {
                 "Watering frequency must be a be a number",
             );
         }
-
+        addPLant(name, Number(days));
+        router.navigate("/");
         console.log("Adding plant", name, days);
     };
 
     return (
-        <ScrollView
+        <KeyboardAwareScrollView
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             keyboardShouldPersistTaps="handled"
@@ -63,7 +68,7 @@ export default function NewScreen() {
                 keyboardType="number-pad"
             />
             <PlantlyButton title="Add plant" onPress={handleSubmit} />
-        </ScrollView>
+        </KeyboardAwareScrollView>
     );
 }
 
