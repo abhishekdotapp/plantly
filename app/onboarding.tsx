@@ -1,21 +1,45 @@
-import {Text, View, StyleSheet, Platform} from "react-native";
+import { Text, View, StyleSheet} from "react-native";
 import { theme } from "@/theme";
-import {useUserStore} from "@/store/userStore";
-import {useRouter} from "expo-router";
-import {PlantlyButton} from "@/components/PlantlyButton";
-import {LinearGradient} from "expo-linear-gradient";
+import { useUserStore } from "@/store/userStore";
+import { useRouter } from "expo-router";
+import { PlantlyButton } from "@/components/PlantlyButton";
+import { LinearGradient } from "expo-linear-gradient";
 import PlantlyImage from "@/components/PlantlyImage";
+import { useFonts, Caveat_400Regular } from '@expo-google-fonts/caveat';
+import { useEffect } from "react";
+import * as SplashScreen from 'expo-splash-screen';
+
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function OnboardingScreen() {
-    const router = useRouter()
-    const toggleHasUserOnboarded = useUserStore(state => state.toogleHadOnbaorded)
-    const hasUserOnboarded = useUserStore(state => state.hasUserOnboarded)
+    const router = useRouter();
+    const toggleHasUserOnboarded = useUserStore(state => state.toogleHadOnbaorded);
+    const hasUserOnboarded = useUserStore(state => state.hasUserOnboarded);
 
-    const handlePress = () =>{
-        toggleHasUserOnboarded()
-        router.replace("/")
-        console.log(hasUserOnboarded)
+    // Load the font
+    const [fontsLoaded] = useFonts({
+        'Caveat_400Regular': Caveat_400Regular,
+    });
+
+    useEffect(() => {
+        if (fontsLoaded) {
+            // Hide splash screen once fonts are loaded
+            SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    // Don't render until fonts are loaded
+    if (!fontsLoaded) {
+        return null;
     }
+
+    const handlePress = () => {
+        toggleHasUserOnboarded();
+        router.replace("/");
+        console.log(hasUserOnboarded);
+    };
+
     return (
         <LinearGradient
             start={[0, 0]}
@@ -23,8 +47,8 @@ export default function OnboardingScreen() {
             colors={[theme.colorLimeGreen, theme.colorAppleGreen, theme.colorGreen]}
             style={styles.container}>
             <View>
-            <Text style={styles.headline}>Plantly</Text>
-            <Text style={styles.tagline}>Keep your plants healthy and hydrated</Text>
+                <Text style={styles.headline}>Plantly</Text>
+                <Text style={styles.tagline}>Keep your plants healthy and hydrated</Text>
             </View>
             <PlantlyImage />
             <PlantlyButton title={"Let me in!"} onPress={handlePress} />
@@ -50,7 +74,6 @@ const styles = StyleSheet.create({
         fontSize: 34,
         color: theme.colorWhite,
         alignItems: "center",
-        fontFamily: Platform.select({ios: "Caveat-Regular", android: "Caveat_400Regular",
-       }),
- },
+        fontFamily: "Caveat_400Regular", // Use the exact name from useFonts
+    },
 });
