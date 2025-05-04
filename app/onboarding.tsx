@@ -6,11 +6,11 @@ import { PlantlyButton } from "@/components/PlantlyButton";
 import { LinearGradient } from "expo-linear-gradient";
 import PlantlyImage from "@/components/PlantlyImage";
 import { useFonts, Caveat_400Regular } from '@expo-google-fonts/caveat';
-import { useEffect } from "react";
-import * as SplashScreen from 'expo-splash-screen';
+
+
 
 // Keep the splash screen visible while we fetch resources
-SplashScreen.preventAutoHideAsync();
+
 
 export default function OnboardingScreen() {
     const router = useRouter();
@@ -22,17 +22,6 @@ export default function OnboardingScreen() {
         'Caveat_400Regular': Caveat_400Regular,
     });
 
-    useEffect(() => {
-        if (fontsLoaded) {
-            // Hide splash screen once fonts are loaded
-            SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
-
-    // Don't render until fonts are loaded
-    if (!fontsLoaded) {
-        return null;
-    }
 
     const handlePress = () => {
         toggleHasUserOnboarded();
